@@ -1,0 +1,25 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model TrackTime {
+  id         Int    @id @default(autoincrement())
+  track      String
+  user       User   @relation("Times", fields: [userId], references: [id])
+  userId     Int
+  stringTime String
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  pseudo   String
+  password String
+  times    TrackTime[] @relation("Times")
+}
